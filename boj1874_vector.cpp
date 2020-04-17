@@ -1,12 +1,12 @@
 #include <iostream>
 #include <stack>
-#include <queue>
+#include <vector>
 
 using namespace std;
 
 int main(void){
 	stack<int> s;
-	queue<char> out;
+	vector<char> out;
 
 	int n;
 	cin >> n;
@@ -18,7 +18,7 @@ int main(void){
 		if((1 <= num) && (num <= n)){
 			sequence[i] = num;
 		} else{
-			cout << "Number must be 1 <= number <= " << n << endl;
+			cout << "Number must be 1 <= number <= " << n << '\n';
 		}
 	}
 
@@ -26,23 +26,22 @@ int main(void){
 
 	for(int i = 1; i <= n; i++){
 		s.push(i);
-		out.push('+');
+		out.push_back('+');
 
 		while(!s.empty() && s.top() == sequence[sp]){
 			s.pop();
-			out.push('-');
+			out.push_back('-');
 			sp++;
 		}
 	}
 
 	if(s.empty()){
-		int q_size = out.size();
-		for(int i = 0; i < q_size; i++){
-			cout << out.front() << endl;
-			out.pop();
+		vector<char>::iterator it;
+		for(it = out.begin(); it != out.end(); it++){
+			cout << *it << '\n';
 		}
 	} else{
-		cout << "NO" << endl;
+		cout << "NO" << '\n';
 	}
 
 	delete[] sequence;
