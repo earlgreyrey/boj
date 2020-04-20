@@ -8,40 +8,46 @@ int find_max(char **candy, int n) {
 	int is_max;
 	vector<char> v;
 
-	v.push_back(candy[0][0]);
-
-	for(int i = 1; i < n; i++) {
+	for(int i = 0; i < n; i++) {
+		v.push_back(candy[i][0]);
 		for(int j = 1; j < n; j++) {
 			if(v.back() != (candy[i][j])) {
+				is_max = v.size();
+				if(is_max > max_len) {
+					max_len = is_max;
+				}
 				v.clear();
 				v.push_back(candy[i][j]);
 			} else {
 				v.push_back(candy[i][j]);
 			}
 		}
+		is_max = v.size();
+		if(is_max > max_len) {
+			max_len = is_max;
+		}
+		v.clear();
 	}
 
-	is_max = v.size();
-
-	if(is_max > max_len) {
-		max_len = is_max;
-	}
-
-	for(int j = 1; j < n; j++) {
+	for(int j = 0; j < n; j++) {
+		v.push_back(candy[0][j]);
 		for(int i = 1; i < n; i++) {
 			if(v.back() != candy[i][j]) {
+				is_max = v.size();
+				if(is_max > max_len) {
+					max_len = is_max;
+				}
 				v.clear();
 				v.push_back(candy[i][j]);
 			} else {
 				v.push_back(candy[i][j]);
 			}
 		}
-	}
-
-	is_max = v.size();
-
-	if(is_max > max_len) {
-		max_len = is_max;
+		is_max = v.size();
+		if(is_max > max_len) {
+			max_len = is_max;
+		}
+		v.clear();
 	}
 
 	return max_len;
@@ -54,7 +60,7 @@ void candy_lover(char **candy, int n) {
 	char tmp;
 	for(int i = 0; i < n; i++) {
 		for(int j = 0; j < n-1; j++) {
-			candy[i][j] = tmp;
+			tmp = candy[i][j];
 			candy[i][j] = candy[i][j+1];
 			candy[i][j+1] = tmp;
 
@@ -63,25 +69,34 @@ void candy_lover(char **candy, int n) {
 			if(is_max > max_len) {
 				max_len = is_max;
 			}
+
+			tmp = candy[i][j];
+			candy[i][j] = candy[i][j+1];
+			candy[i][j+1] = tmp;
 		}
 	}
 
 //	column
 	for(int j = 0; j < n; j++) {
 		for(int i = 0; i < n-1; i++) {
-			candy[i][j] = tmp;
-			candy[i][j] = candy[i][j+1];
-			candy[i][j+1] = tmp;
+			tmp = candy[i][j];
+			candy[i][j] = candy[i+1][j];
+			candy[i+1][j] = tmp;
 
 			is_max = find_max(candy, n);
 			
 			if(is_max > max_len) {
 				max_len = is_max;
 			}
+
+			tmp = candy[i][j];
+			candy[i][j] = candy[i+1][j];
+			candy[i+1][j] = tmp;
 		}
 	}
 
 	printf("%d\n", max_len);
+
 }
 
 int main(void) {
