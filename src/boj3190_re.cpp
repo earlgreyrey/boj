@@ -5,7 +5,7 @@
 using namespace std;
 
 int board[101][101];
-int n, k, l, x, y;
+int n, k, l, x = 1, y = 1;
 int dir = 0;
 int life = 0;
 
@@ -16,16 +16,16 @@ queue<pair<int, char>> rote;
 queue<pair<int, int>> snake;
 
 int life_is_short() {
-	snake.push({1, 1});
-	board[1][1] = 2;
+	snake.push({0, 0});
+	board[0][0] = 2;
 
 	while(1) {
 		
 		life++;
 		//cout<<"life: "<<life<<endl;
-		//x = snake.back().first;
+		x = snake.back().first;
 		x += dx[dir];
-		//y = snake.back().second;
+		y = snake.back().second;
 		y += dy[dir];
 
 		if(x<0 || y<0 || x>=n || y>= n || board[x][y]==2) {
@@ -39,21 +39,23 @@ int life_is_short() {
 
 			board[nx][ny] = 0;
 			//cout<<"0"<<endl;
-			//snake.pop();
+			snake.pop();
+		}
+
+		if(board[x][y] == 1) {
+			board[x][y] = 0;
 		}
 
 		board[x][y] = 2;
 		//cout<<"2"<<endl;
-
+		snake.push(make_pair(x, y));
+		
 		if(life == rote.front().first) {
 			if(rote.front().second == 'L') dir = L[dir];
 			else dir = D[dir];
 			//cout<<"rotate"<<endl;
 			rote.pop();
 		}
-
-		snake.push(make_pair(x, y));
-		//cout<<"push"<<endl;
 
 	}
 
@@ -66,7 +68,7 @@ int main(){
 	for(int i = 0; i < k; i++) {
 		int apple_x, apple_y;
 		cin >> apple_x >> apple_y;
-		board[apple_x][apple_y] = 1;
+		board[apple_x-1][apple_y-1] = 1;
 	}
 
 	cin >> l;
